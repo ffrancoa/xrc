@@ -1,0 +1,40 @@
+[package]
+name = "xrc"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "A CLI that scrapes coding sites to craft Rust problem templates."
+license = "MIT"
+repository = "https://github.com/ffrancoa/xrc"
+keywords = ["cli", "competitive-programming", "scraper", "templates"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "xrc"
+path = "src/main.rs"
+
+[dependencies]
+anstream = "1.0.0"
+anstyle = "1.0.14"
+anyhow = "1.0.103"
+clap = { version = "4.6.1", features = ["derive", "color"] }
+ego-tree = "0.11"
+fancy-regex = "0.18.0"
+minijinja = "2.21.0"
+minijinja-contrib = { version = "2.21.0", features = ["pycompat"] }
+regex = "1.12.4"
+scraper = "0.27.0"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = { version = "1.0.150", features = ["preserve_order"] }
+textwrap = "0.16.2"
+ureq = { version = "3.3.0", features = ["json"] }
+url = "2.5.8"
+
+[dev-dependencies]
+assert_cmd = "2.2.2"
+insta = "1.48.0"
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1

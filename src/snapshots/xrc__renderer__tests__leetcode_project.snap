@@ -1,0 +1,38 @@
+---
+source: src/renderer.rs
+expression: joined
+---
+=== src/lib.rs ===
+// Two Sum
+//
+// Given an array of integers `nums`.
+//
+// Constraints
+// -----------
+// 2 ≤ nums.length ≤ 10^4
+
+pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+    todo!("pending solution!")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let nums = vec![2, 7, 11, 15];
+        let target = 9;
+        let expected = vec![0, 1];
+        // Because nums[0] + nums[1] == 9.
+        assert_eq!(two_sum(nums, target), expected);
+    }
+}
+=== Cargo.toml ===
+[package]
+name    = "two_sum"
+version = "0.1.0"
+edition = "2024"
+
+[lints.rust]
+unused_variables = "allow"

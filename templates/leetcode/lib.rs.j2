@@ -1,0 +1,58 @@
+// {{ title }}
+//
+{% for line in description.splitlines() -%}
+{{ '// ' + line if line else '//' }}
+{% endfor %}
+{% if constraints %}
+//
+{{ '// ' + constraints_header }}
+{{ '// ' + '-' * constraints_header|length }}
+{% for line in constraints.splitlines() -%}
+{{ '// ' + line if line else '//' }}
+{% endfor %}
+{% endif -%}
+
+{% if input_spec %}
+//
+{{ '// ' + input_header }}
+{{ '// ' + '-' * input_header|length }}
+{% for line in input_spec.splitlines() -%}
+{{ '// ' + line if line else '//' }}
+{% endfor %}
+{% endif -%}
+
+{% if output_spec %}
+//
+{{ '// ' + output_header }}
+{{ '// ' + '-' * output_header|length }}
+{% for line in output_spec.splitlines() -%}
+{{ '// ' + line if line else '//' }}
+{% endfor %}
+{% endif %}
+
+{% if rust_signature %}
+{{ rust_signature }}
+{% else %}
+pub fn {{ function_name }}(input: &str) -> String {
+{% endif %}
+    todo!("pending solution!")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+{% for s in samples %}
+
+    #[test]
+    fn {{ s.name }}() {
+{{ s.input | indent(8, true) }}
+        let expected = {{ s.output }};
+        {% if s.explanation %}
+        {% for line in s.explanation.splitlines() %}
+        // {{ line }}
+        {% endfor %}
+        {% endif %}
+        assert_eq!({{ function_name }}({{ s.varnames | join(", ") }}), expected);
+    }
+{% endfor %}
+}

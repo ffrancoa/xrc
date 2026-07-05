@@ -1,0 +1,73 @@
+---
+source: src/renderer.rs
+expression: joined
+---
+=== src/main.rs ===
+// A Plus B
+//
+// Add two numbers.
+//
+// That is all.
+//
+// Constraints
+// -----------
+// `1` <= `N` <= `10`^`6`
+//
+// Input Specification
+// -------------------
+// Two integers.
+//
+// Output Specification
+// --------------------
+// Their sum.
+
+#[macro_use]
+extern crate dmoj;
+
+fn main() {
+    todo!("pending solution!")
+}
+=== tests/cli.rs ===
+use assert_cmd::Command;
+use indoc::indoc;
+
+#[test]
+fn test_cli() {
+    let input = indoc! {"
+        1 2
+    "};
+    let expected = indoc! {"
+        3
+    "};
+
+    Command::cargo_bin("a_plus_b").unwrap()
+        .write_stdin(input)
+        .assert()
+        .stdout(expected);
+    let input = indoc! {"
+        3 4
+    "};
+    let expected = indoc! {"
+        7
+    "};
+
+    Command::cargo_bin("a_plus_b").unwrap()
+        .write_stdin(input)
+        .assert()
+        .stdout(expected);
+}
+=== Cargo.toml ===
+[package]
+name    = "a_plus_b"
+version = "0.1.0"
+edition = "2024"
+
+[lints.rust]
+unused_imports = "allow"
+
+[dependencies]
+indoc   = { version = "2.0.6" }
+dmoj    = { version = "0.1.5" }
+
+[dev-dependencies]
+assert_cmd  = { version = "2.0.17" }
