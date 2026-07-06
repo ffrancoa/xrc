@@ -1,0 +1,4 @@
+# Normalize line endings to LF on checkout across all platforms. Templates are
+# embedded via include_str! and compared byte-for-byte against golden fixtures,
+# so a CRLF checkout on Windows (git autocrlf) would break the golden tests.
+* text=auto eol=lf
