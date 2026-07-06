@@ -15,7 +15,6 @@ classifiers = [
     "Environment :: Console",
     "Programming Language :: Rust",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
 ]
 dynamic = ["version"]
 
@@ -23,7 +22,5 @@ dynamic = ["version"]
 Repository = "https://github.com/ffrancoa/xrc"
 
 [tool.maturin]
-# Pure Rust binary (no Python module): package the `xrc` executable as a wheel
-# script so `pip install xrc` puts it on PATH. Version comes from Cargo.toml.
 bindings = "bin"
 manifest-path = "Cargo.toml"
