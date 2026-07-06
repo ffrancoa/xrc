@@ -3,12 +3,12 @@
 [![Crates.io](https://img.shields.io/crates/v/xrc.svg)](https://crates.io/crates/xrc)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Turn a coding-problem URL into a ready-to-solve Rust project, then track your
-progress as you go.
+A minimal CLI to give your Rust some exercise.
 
-`xrc` scrapes a problem page, writes a clean cargo project with the statement,
-constraints, and sample tests already wired up, and gets out of your way so you
-can focus on the fun part: solving it.
+`xrc` turns a coding-problem URL into a ready-to-solve Rust project: it scrapes
+the problem page, writes a clean cargo project with the statement, constraints,
+and sample tests already wired up, and gets out of your way so you can focus on
+the fun part: solving it. It also tracks your progress as you go.
 
 ## Install
 
