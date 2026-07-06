@@ -2,6 +2,7 @@ use std::sync::LazyLock;
 
 use anyhow::{Result, bail};
 use scraper::{ElementRef, Html, Selector};
+use serde::Deserialize;
 
 use crate::scrapers::ProblemData;
 use crate::utils::{element_text, extract_clean_title, format_dmoj_text};
@@ -41,9 +42,37 @@ fn fetch_direct(url: &str) -> Result<String> {
     http_get(url)
 }
 
+/// Wayback Machine availability API response.
+/// See https://archive.org/help/wayback_api.php
+#[derive(Deserialize)]
+struct WaybackResponse {
+    archived_snapshots: ArchivedSnapshots,
+}
+
+#[derive(Deserialize, Default)]
+struct ArchivedSnapshots {
+    #[serde(default)]
+    closest: Option<Snapshot>,
+}
+
+#[derive(Deserialize)]
+struct Snapshot {
+    url: String,
+}
+
 fn fetch_web_archive(url: &str) -> Result<String> {
-    let archive_url = format!("https://web.archive.org/web/2024/{url}");
-    http_get(&archive_url)
+    // Resolve the most recent snapshot instead of pinning a fixed year, so newer
+    // captures are picked up automatically. The API must be called without a
+    // timestamp: a future timestamp makes it return an empty result.
+    let api_url = format!("https://archive.org/wayback/available?url={url}");
+    let body = http_get(&api_url)?;
+    let response: WaybackResponse = serde_json::from_str(&body)?;
+
+    let Some(snapshot) = response.archived_snapshots.closest else {
+        bail!("no web archive snapshot found for {url}");
+    };
+
+    http_get(&snapshot.url)
 }
 
 fn next_sibling_elements(el: ElementRef<'_>) -> impl Iterator<Item = ElementRef<'_>> {
@@ -74,8 +103,8 @@ pub fn parse(html: &str) -> Result<ProblemData> {
 
     let first_h4 = h4_tags[0];
 
-    // Equivalent of BS4 `first_h4.find_all_previous()`: elements before
-    // first_h4 in reverse document order, collecting <p> until an <h2>.
+    // Walk elements before first_h4 in reverse document order, collecting
+    // <p> until an <h2>.
     let mut preceding: Vec<ElementRef> = Vec::new();
     for node in doc.tree.root().descendants() {
         if node.id() == first_h4.id() {
@@ -212,6 +241,23 @@ mod tests {
         assert_eq!(data.sample_inputs, vec!["3"]);
         assert_eq!(data.sample_outputs, vec!["9"]);
         assert!(data.rust_signature.is_none());
+    }
+
+    #[test]
+    fn wayback_response_parses_snapshot() {
+        let json = r#"{"url":"https://dmoj.ca/problem/aplusb","archived_snapshots":{"closest":{"status":"200","available":true,"url":"http://web.archive.org/web/20250812024720/https://dmoj.ca/problem/aplusb","timestamp":"20250812024720"}}}"#;
+        let response: WaybackResponse = serde_json::from_str(json).unwrap();
+        assert_eq!(
+            response.archived_snapshots.closest.unwrap().url,
+            "http://web.archive.org/web/20250812024720/https://dmoj.ca/problem/aplusb"
+        );
+    }
+
+    #[test]
+    fn wayback_response_handles_no_snapshot() {
+        let json = r#"{"url":"https://dmoj.ca/problem/aplusb","archived_snapshots":{}}"#;
+        let response: WaybackResponse = serde_json::from_str(json).unwrap();
+        assert!(response.archived_snapshots.closest.is_none());
     }
 
     #[test]
