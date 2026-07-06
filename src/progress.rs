@@ -8,7 +8,7 @@ use crate::output::{YELLOW, paint};
 
 /// Manages exercise progress tracking. The progress file is a flat JSON
 /// object mapping project names to booleans; the schema (and 2-space pretty
-/// printing) matches the Python version so existing files keep working.
+/// printing) is kept stable so existing files keep working.
 pub struct ProgressTracker {
     progress_file: PathBuf,
     progress: Map<String, Value>,
@@ -80,11 +80,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn round_trips_python_style_file() {
+    fn round_trips_pretty_json_file() {
         let tmp = std::env::temp_dir().join(format!("xrc_progress_test_{}", std::process::id()));
         fs::create_dir_all(&tmp).unwrap();
         let file = tmp.join(".xrc_progress.json");
-        // exactly what Python's json.dumps(..., indent=2) writes
+        // the exact 2-space pretty JSON we persist
         fs::write(&file, "{\n  \"two_sum\": true,\n  \"a_plus_b\": false\n}").unwrap();
 
         let mut tracker = ProgressTracker::new(file.clone());

@@ -6,18 +6,18 @@ use scraper::{ElementRef, Html, Node, Selector};
 
 pub const MAX_WIDTH: usize = 84;
 
-/// Equivalent of BeautifulSoup's `.text`: all descendant text nodes concatenated.
+/// Concatenates all descendant text nodes.
 pub fn element_text(el: ElementRef) -> String {
     el.text().collect()
 }
 
-/// Equivalent of BeautifulSoup's `get_text(strip=True)`: each text node
-/// stripped, empty ones dropped, joined without separator.
+/// Trims each descendant text node, drops empty ones, and joins without a
+/// separator.
 pub fn element_text_stripped(el: ElementRef) -> String {
     el.text().map(str::trim).filter(|s| !s.is_empty()).collect()
 }
 
-/// Equivalent of BeautifulSoup's `get_text("\n", strip=True)`.
+/// Trims each descendant text node, drops empty ones, and joins with newlines.
 pub fn element_text_stripped_joined(el: ElementRef) -> String {
     el.text()
         .map(str::trim)
@@ -28,8 +28,8 @@ pub fn element_text_stripped_joined(el: ElementRef) -> String {
 
 pub fn format_dmoj_text(text: &str) -> String {
     static TILDE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"~(.*?)~").unwrap());
-    // `(?<!\w)([A-Za-z]\w*)(?!\w)` in Python; with a leading letter and greedy
-    // `\w*` both lookarounds reduce to word boundaries.
+    // with a leading letter and greedy `\w*`, the `(?<!\w)...(?!\w)` lookarounds
+    // reduce to plain word boundaries.
     static IDENT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b([A-Za-z]\w*)\b").unwrap());
 
     let replace_tilde_block = |caps: &regex::Captures| -> String {
@@ -232,7 +232,7 @@ mod tests {
 
     #[test]
     fn dmoj_text_replaces_tilde_math() {
-        // digits are not identifier-like, so they stay unwrapped (matches Python)
+        // digits are not identifier-like, so they stay unwrapped
         assert_eq!(format_dmoj_text(r"~1 \le N \le 10^6~"), "1 <= `N` <= 10^6");
         assert_eq!(format_dmoj_text(r"~a \ne b~"), "`a` != `b`");
         assert_eq!(format_dmoj_text(r"~2 \times 3~"), "2 × 3");

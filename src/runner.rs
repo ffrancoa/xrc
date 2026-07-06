@@ -65,8 +65,8 @@ impl<'a> TestRunner<'a> {
     }
 
     fn run_command(&self, args: &[&str]) -> CommandResult {
-        // stdout and stderr are concatenated, mirroring Python's
-        // stderr=subprocess.STDOUT (test names appear on stdout either way)
+        // stdout and stderr are concatenated so test names are captured
+        // regardless of which stream cargo writes them to
         match Command::new("cargo")
             .args(args)
             .current_dir(self.project_dir)

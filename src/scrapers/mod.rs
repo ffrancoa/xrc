@@ -4,8 +4,8 @@ pub mod leetcode;
 use anyhow::Result;
 use url::Url;
 
-/// The contract between a scraper and the renderer, mirroring the dict
-/// returned by the Python `extract_problem_parts` functions.
+/// The contract between a scraper and the renderer, produced by each scraper's
+/// `extract_problem_parts` function.
 #[derive(Debug, Default)]
 pub struct ProblemData {
     pub title: String,
@@ -30,7 +30,7 @@ const SCRAPERS: &[(&str, ScraperFn)] = &[
     ("leetcode.com", leetcode::extract_problem_parts),
 ];
 
-/// Equivalent of Python's `urlparse(url).netloc` (host plus optional port).
+/// Extracts the netloc (host plus optional port) from a URL.
 pub fn netloc(url: &str) -> String {
     let Ok(parsed) = Url::parse(url) else {
         return String::new();
@@ -65,7 +65,7 @@ mod tests {
         assert_eq!(source, "dmoj");
         let (source, _) = find_scraper("https://leetcode.com/problems/two-sum/").unwrap();
         assert_eq!(source, "leetcode");
-        // substring match on the netloc, like the Python version
+        // substring match on the netloc
         let (source, _) = find_scraper("https://www.dmoj.ca/problem/aplusb").unwrap();
         assert_eq!(source, "dmoj");
     }

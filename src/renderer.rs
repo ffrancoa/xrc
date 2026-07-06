@@ -58,7 +58,7 @@ fn build_env(source: &str) -> Result<Environment<'static>> {
     let mut env = Environment::new();
     env.set_trim_blocks(true);
     env.set_lstrip_blocks(true);
-    // the templates use Python string methods like `.splitlines()`
+    // the templates use string methods like `.splitlines()` via minijinja's pycompat
     env.set_unknown_method_callback(minijinja_contrib::pycompat::unknown_method_callback);
 
     match source {

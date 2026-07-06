@@ -403,7 +403,7 @@ mod tests {
             ]
         );
 
-        // Python quirk preserved: the scalar scan stops at a comma even
+        // deliberate quirk: the scalar scan stops at a comma even
         // inside double quotes, so this input truncates and parsing stops
         let parsed = parse_assignments("s = \"a,b\", grid = [[1,2],[3,4]]");
         assert_eq!(parsed, vec![("s".to_string(), "\"a".to_string())]);
@@ -417,7 +417,7 @@ mod tests {
                 "defaultCode": "impl Solution {\n    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n        \n    }\n}"
             }
         ]);
-        // note: the Python regex requires `{` immediately followed by `}` after
+        // note: the regex requires `{` immediately followed by `}` after
         // optional whitespace, so a body with only whitespace matches
         let sig = extract_rust_signature(&code_def.to_string());
         assert_eq!(
