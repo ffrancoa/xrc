@@ -1,6 +1,7 @@
 # xrc
 
 [![Crates.io](https://img.shields.io/crates/v/xrc.svg)](https://crates.io/crates/xrc)
+[![PyPI](https://img.shields.io/pypi/v/xrc.svg)](https://pypi.org/project/xrc/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A minimal CLI to give your Rust some exercise.
@@ -12,8 +13,16 @@ the fun part: solving it. It also tracks your progress as you go.
 
 ## Install
 
+With cargo:
+
 ```bash
 cargo install xrc
+```
+
+Or, if you live in the Python world, grab the prebuilt binary from PyPI:
+
+```bash
+pip install xrc      # or: uv tool install xrc
 ```
 
 ## Pull a problem
