@@ -6,7 +6,7 @@ rust-version = "1.85"
 description = "A CLI that scrapes coding sites to craft Rust problem templates."
 license = "MIT"
 repository = "https://github.com/ffrancoa/xrc"
-keywords = ["cli", "competitive-programming", "scraper", "templates"]
+keywords = ["cli", "contest", "sandbox", "templates"]
 categories = ["command-line-utilities"]
 
 [[bin]]
