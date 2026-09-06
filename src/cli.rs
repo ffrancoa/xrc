@@ -3,13 +3,16 @@ use clap::{Parser, Subcommand};
 
 fn styles() -> Styles {
     Styles::styled()
-        .header(AnsiColor::Yellow.on_default().effects(Effects::BOLD))
-        .usage(AnsiColor::Yellow.on_default().effects(Effects::BOLD))
-        .literal(AnsiColor::Green.on_default())
+        .header(AnsiColor::Green.on_default().effects(Effects::BOLD))
+        .usage(AnsiColor::Green.on_default().effects(Effects::BOLD))
+        .literal(AnsiColor::Cyan.on_default())
         .placeholder(AnsiColor::Cyan.on_default())
+        .valid(AnsiColor::Green.on_default().effects(Effects::BOLD))
+        .invalid(AnsiColor::Yellow.on_default().effects(Effects::BOLD))
+        .error(AnsiColor::Red.on_default().effects(Effects::BOLD))
 }
 
-/// Scrape coding sites and generate Rust problem templates.
+/// Give your Rust some exercise.
 #[derive(Parser)]
 #[command(name = "xrc", version, styles = styles(), arg_required_else_help = true)]
 pub struct Cli {
