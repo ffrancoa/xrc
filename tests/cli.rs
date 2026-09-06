@@ -11,7 +11,7 @@ fn help_lists_both_commands() {
     let assert = xrc().arg("--help").assert().success();
     let output = String::from_utf8_lossy(&assert.get_output().stdout).into_owned();
     // clap strips the doc comment's trailing period in help output
-    assert!(output.contains("Scrape coding sites and generate Rust problem templates"));
+    assert!(output.contains("Give your Rust some exercise"));
     assert!(output.contains("pull"));
     assert!(output.contains("check"));
 }

@@ -224,8 +224,7 @@ pub fn parse_assignments(s: &str) -> Vec<(String, String)> {
             i += 1;
         }
         // value
-        let raw_value: String;
-        if i < n && chars[i] == '[' {
+        let raw_value: String = if i < n && chars[i] == '[' {
             let start = i;
             let mut depth = 0i32;
             let mut in_quote: Option<char> = None;
@@ -248,23 +247,23 @@ pub fn parse_assignments(s: &str) -> Vec<(String, String)> {
                 }
                 i += 1;
             }
-            raw_value = chars[start..i]
+            chars[start..i]
                 .iter()
                 .collect::<String>()
                 .trim()
-                .to_string();
+                .to_string()
         } else {
             let start = i;
             // scalar until top-level comma
             while i < n && chars[i] != ',' {
                 i += 1;
             }
-            raw_value = chars[start..i]
+            chars[start..i]
                 .iter()
                 .collect::<String>()
                 .trim()
-                .to_string();
-        }
+                .to_string()
+        };
         assignments.push((name, raw_value));
         // skip comma if present
         while i < n && chars[i].is_whitespace() {
