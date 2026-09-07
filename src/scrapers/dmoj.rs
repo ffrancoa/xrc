@@ -8,19 +8,8 @@ use crate::scrapers::ProblemData;
 use crate::utils::{element_text, extract_clean_title, format_dmoj_text};
 
 pub fn extract_problem_parts(url: &str) -> Result<ProblemData> {
-    let html = fetch(url)?;
+    let html = fetch_web_archive(url)?;
     parse(&html)
-}
-
-fn fetch(url: &str) -> Result<String> {
-    match fetch_direct(url) {
-        Ok(html) => Ok(html),
-        Err(e) if e.to_string().contains("403") => {
-            eprintln!("blocked by cloudflare, retrying via web archive...");
-            fetch_web_archive(url)
-        }
-        Err(e) => Err(e),
-    }
 }
 
 fn http_get(url: &str) -> Result<String> {
@@ -36,10 +25,6 @@ fn http_get(url: &str) -> Result<String> {
         .header("Accept-Language", "en-US,en;q=0.5")
         .call()?;
     Ok(response.body_mut().read_to_string()?)
-}
-
-fn fetch_direct(url: &str) -> Result<String> {
-    http_get(url)
 }
 
 /// Wayback Machine availability API response.
@@ -61,7 +46,7 @@ struct Snapshot {
 }
 
 fn fetch_web_archive(url: &str) -> Result<String> {
-    // Resolve the most recent snapshot instead of pinning a fixed year, so newer
+    // resolve the most recent snapshot instead of pinning a fixed year, so newer
     // captures are picked up automatically. The API must be called without a
     // timestamp: a future timestamp makes it return an empty result.
     let api_url = format!("https://archive.org/wayback/available?url={url}");

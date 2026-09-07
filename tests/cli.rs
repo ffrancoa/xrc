@@ -52,7 +52,7 @@ fn check_reports_empty_exercises_dir() {
         .arg("check")
         .assert()
         .success()
-        .stdout("no rust projects found in exercises directory\n");
+        .stdout("warning: no rust projects found in exercises directory\n");
 }
 
 #[test]

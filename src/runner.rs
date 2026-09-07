@@ -5,7 +5,7 @@ use std::sync::LazyLock;
 use anstream::println;
 use regex::Regex;
 
-use crate::output::{YELLOW, paint};
+use crate::output::warning;
 
 /// Handles running and parsing cargo tests.
 pub struct TestRunner<'a> {
@@ -97,10 +97,7 @@ impl<'a> TestRunner<'a> {
         if self.verbose {
             println!(
                 "{}",
-                paint(
-                    YELLOW,
-                    "warning: no tests enumerated. running single cargo test."
-                )
+                warning("no tests enumerated. running single cargo test.")
             );
         }
 

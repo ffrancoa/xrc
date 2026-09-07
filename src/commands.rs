@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 
 use anstream::println;
 
-use crate::output::{BOLD_UNDERLINE, CYAN, GREEN, RED, YELLOW, paint};
+use crate::output::{BOLD_UNDERLINE, CYAN, GREEN, RED, YELLOW, error, info, paint, warning};
 use crate::progress::ProgressTracker;
 use crate::runner::TestRunner;
 use crate::{renderer, scrapers, utils, writer};
@@ -12,17 +12,14 @@ use crate::{renderer, scrapers, utils, writer};
 pub fn cmd_pull(url: &str) -> i32 {
     let Some((source, scraper_fn)) = scrapers::find_scraper(url) else {
         let netloc = scrapers::netloc(url);
-        println!(
-            "{}",
-            paint(RED, &format!("error: unsupported site '{netloc}'"))
-        );
+        println!("{}", error(&format!("unsupported site '{netloc}'")));
         return 1;
     };
 
     let cwd = match env::current_dir() {
         Ok(cwd) => cwd,
         Err(e) => {
-            println!("{}", paint(RED, &format!("error creating project: {e}")));
+            println!("{}", error(&format!("could not create project: {e}")));
             return 1;
         }
     };
@@ -44,15 +41,14 @@ pub fn cmd_pull(url: &str) -> i32 {
         Ok(project_name) => {
             println!(
                 "{}",
-                paint(
-                    GREEN,
-                    &format!("successfully created project: {project_name}")
-                )
+                info(&format!(
+                    "successfully created project '{project_name}' in exercises/"
+                ))
             );
             0
         }
         Err(e) => {
-            println!("{}", paint(RED, &format!("error creating project: {e}")));
+            println!("{}", error(&e.to_string()));
             1
         }
     }
@@ -123,10 +119,7 @@ fn print_summary(results: &[(String, bool)]) {
 pub fn cmd_check(recheck: bool, verbose: bool) -> i32 {
     let exercises_dir = Path::new("exercises");
     if !exercises_dir.exists() {
-        println!(
-            "{}",
-            paint(RED, "error: exercises directory 'exercises' not found")
-        );
+        println!("{}", error("exercises directory 'exercises' not found"));
         return 1;
     }
 
@@ -134,7 +127,7 @@ pub fn cmd_check(recheck: bool, verbose: bool) -> i32 {
     if projects.is_empty() {
         println!(
             "{}",
-            paint(YELLOW, "no rust projects found in exercises directory")
+            warning("no rust projects found in exercises directory")
         );
         return 0;
     }

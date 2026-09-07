@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use anstream::println;
 use serde_json::{Map, Value};
 
-use crate::output::{YELLOW, paint};
+use crate::output::warning;
 
 /// Manages exercise progress tracking. The progress file is a flat JSON
 /// object mapping project names to booleans; the schema (and 2-space pretty
@@ -35,13 +35,7 @@ impl ProgressTracker {
         match loaded {
             Ok(map) => map,
             Err(e) => {
-                println!(
-                    "{}",
-                    paint(
-                        YELLOW,
-                        &format!("warning: could not load progress file: {e}")
-                    )
-                );
+                println!("{}", warning(&format!("could not load progress file: {e}")));
                 Map::new()
             }
         }
@@ -60,10 +54,7 @@ impl ProgressTracker {
             fs::write(&self.progress_file, text)
         };
         if let Err(e) = write() {
-            println!(
-                "{}",
-                paint(YELLOW, &format!("warning: could not save progress: {e}"))
-            );
+            println!("{}", warning(&format!("could not save progress: {e}")));
         }
     }
 

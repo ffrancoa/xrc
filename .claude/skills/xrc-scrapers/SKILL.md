@@ -22,9 +22,9 @@ split so parsing is testable offline.
 
 ## Existing scrapers
 
-- **dmoj** (`dmoj.rs`): scrapes HTML with the `scraper` crate. Direct fetch is
-  blocked by Cloudflare (403), so it falls back to the Wayback Machine. The fallback
-  resolves the **latest** snapshot via the availability API
+- **dmoj** (`dmoj.rs`): scrapes HTML with the `scraper` crate. Direct fetch is always
+  blocked by Cloudflare (403), so it fetches the Wayback Machine directly — no direct
+  attempt first. It resolves the **latest** snapshot via the availability API
   (`archive.org/wayback/available?url=...`, called **without** a timestamp — a
   future timestamp returns empty). Do not pin a fixed year.
 - **leetcode** (`leetcode.rs`): uses LeetCode's GraphQL API. When `rust_signature`
