@@ -74,7 +74,7 @@ fn process_code_content(s: &str) -> String {
 
     let s = CARET_WS_RE.replace_all(s, "^");
     // only wrap the base in backticks, leave exponent raw
-    let s = IDENT_RE.replace_all(&s, |caps: &fancy_regex::Captures| {
+    let s = IDENT_RE.replace_all(&s, |caps: &fancy_regex::Captures<str>| {
         let base = caps.get(1).map_or("", |m| m.as_str());
         let exp = caps.get(2).map_or("", |m| m.as_str());
         format!("`{base}`{exp}")

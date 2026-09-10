@@ -1,8 +1,8 @@
 [package]
 name = "xrc"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.98"
 description = "A minimal CLI to give your Rust some exercise."
 license = "MIT"
 repository = "https://github.com/ffrancoa/xrc"
@@ -16,18 +16,18 @@ path = "src/main.rs"
 [dependencies]
 anstream = { version = "1.0.0" }
 anstyle = { version = "1.0.14" }
-anyhow = { version = "1.0.103" }
-clap = { version = "4.6.1", features = ["derive", "color"] }
+anyhow = { version = "1.0.104" }
+clap = { version = "4.6.6", features = ["derive", "color"] }
 ego-tree = { version = "0.11" }
-fancy-regex = { version = "0.18.0" }
-minijinja = { version = "2.21.0" }
-minijinja-contrib = { version = "2.21.0", features = ["pycompat"] }
-regex = { version = "1.12.4" }
+fancy-regex = { version = "0.19.1" }
+minijinja = { version = "2.24.0" }
+minijinja-contrib = { version = "2.24.0", features = ["pycompat"] }
+regex = { version = "1.13.1" }
 scraper = { version = "0.27.0" }
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = { version = "1.0.150", features = ["preserve_order"] }
-textwrap = { version = "0.16.2" }
-ureq = { version = "3.3.0", features = ["json"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.151", features = ["preserve_order"] }
+textwrap = { version = "0.16.3" }
+ureq = { version = "3.4.1", features = ["json"] }
 url = { version = "2.5.8" }
 
 [dev-dependencies]
